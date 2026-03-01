@@ -10,7 +10,21 @@ require_relative "lib/evaluators/user_flows"
 require_relative "lib/evaluators/product_charter"
 require_relative "lib/evaluators/feedback"
 
+PROJECTS_ROOT = File.expand_path("projects", __dir__)
+
+helpers do
+  def project_names
+    return [] unless Dir.exist?(PROJECTS_ROOT)
+
+    Dir.children(PROJECTS_ROOT)
+       .select { |entry| File.directory?(File.join(PROJECTS_ROOT, entry)) }
+       .sort
+  end
+end
+
 get "/" do
+  @projects = project_names
+  @default_project = @projects.first
   erb :index
 end
 

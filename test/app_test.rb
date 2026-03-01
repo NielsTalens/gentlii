@@ -30,6 +30,13 @@ class AppTest < Minitest::Test
     assert_includes last_response.body, "id=\"summary\""
   end
 
+  def test_index_renders_project_tags
+    get "/"
+    assert last_response.ok?
+    assert_includes last_response.body, "data-project-tags"
+    assert_includes last_response.body, "crm"
+  end
+
   def test_all_evaluators_returned
     post "/evaluate", { feature_proposal: "Test feature" }
     json = JSON.parse(last_response.body)
